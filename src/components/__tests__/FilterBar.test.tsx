@@ -112,6 +112,15 @@ describe('FilterBar', () => {
   it('should debounce title input', async () => {
     const user = userEvent.setup();
     renderFilterBar();
+    
+    // Wait for initial render and clear any initial calls
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Search by title...')).toBeInTheDocument();
+    });
+    
+    // Clear any calls from initial render
+    mockUpdateFilters.mockClear();
+    
     const titleInput = screen.getByPlaceholderText('Search by title...');
 
     // Type in the input
@@ -123,7 +132,7 @@ describe('FilterBar', () => {
     // Wait for debounce delay (300ms) plus some buffer
     await waitFor(
       () => {
-        expect(mockUpdateFilters).toHaveBeenCalled();
+        expect(mockUpdateFilters).toHaveBeenCalledWith({ title: 'test' });
       },
       { timeout: 1000 }
     );

@@ -45,8 +45,22 @@ describe('useProducts', () => {
   describe('useProducts', () => {
     it('should fetch products', async () => {
       const mockProducts = [
-        { id: 1, title: 'Product 1', price: 10 },
-        { id: 2, title: 'Product 2', price: 20 },
+        { 
+          id: 1, 
+          title: 'Product 1', 
+          price: 10, 
+          description: 'Description 1', 
+          images: ['https://example.com/image1.jpg'],
+          category: { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' }
+        },
+        { 
+          id: 2, 
+          title: 'Product 2', 
+          price: 20, 
+          description: 'Description 2', 
+          images: ['https://example.com/image2.jpg'],
+          category: { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' }
+        },
       ];
       vi.mocked(productServiceModule.productService.getProducts).mockResolvedValue(mockProducts);
 
@@ -74,7 +88,14 @@ describe('useProducts', () => {
 
   describe('useProduct', () => {
     it('should fetch single product', async () => {
-      const mockProduct = { id: 1, title: 'Product 1', price: 10 };
+      const mockProduct = { 
+        id: 1, 
+        title: 'Product 1', 
+        price: 10, 
+        description: 'Description', 
+        images: ['https://example.com/image.jpg'],
+        category: { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' }
+      };
       vi.mocked(productServiceModule.productService.getProduct).mockResolvedValue(mockProduct);
 
       const { result } = renderHook(() => useProduct(1), { wrapper });
@@ -98,8 +119,8 @@ describe('useProducts', () => {
   describe('useCategories', () => {
     it('should fetch categories', async () => {
       const mockCategories = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
+        { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' },
+        { id: 2, name: 'Category 2', image: 'https://example.com/cat2.jpg' },
       ];
       vi.mocked(categoryServiceModule.categoryService.getCategories).mockResolvedValue(mockCategories);
 
@@ -123,7 +144,14 @@ describe('useProducts', () => {
         images: ['https://example.com/image.jpg'],
         categoryId: 1,
       };
-      const createdProduct = { id: 1, ...newProduct };
+      const createdProduct = { 
+        id: 1, 
+        title: newProduct.title,
+        price: newProduct.price,
+        description: newProduct.description,
+        images: newProduct.images,
+        category: { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' }
+      };
       vi.mocked(productServiceModule.productService.createProduct).mockResolvedValue(createdProduct);
 
       const { result } = renderHook(() => useCreateProduct(), { wrapper });
@@ -163,7 +191,14 @@ describe('useProducts', () => {
   describe('useUpdateProduct', () => {
     it('should update product and show success toast', async () => {
       const updateData = { title: 'Updated Product' };
-      const updatedProduct = { id: 1, ...updateData };
+      const updatedProduct = { 
+        id: 1, 
+        title: 'Updated Product',
+        price: 10,
+        description: 'Description',
+        images: ['https://example.com/image.jpg'],
+        category: { id: 1, name: 'Category 1', image: 'https://example.com/cat1.jpg' }
+      };
       vi.mocked(productServiceModule.productService.updateProduct).mockResolvedValue(updatedProduct);
 
       const { result } = renderHook(() => useUpdateProduct(), { wrapper });
