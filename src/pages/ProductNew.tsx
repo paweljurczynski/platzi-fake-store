@@ -11,7 +11,8 @@ export const ProductNew = () => {
     try {
       await createMutation.mutateAsync(data);
       navigate('/');
-    } catch (error) {
+    } catch {
+      // Error is handled by the mutation's onError callback
     }
   };
 

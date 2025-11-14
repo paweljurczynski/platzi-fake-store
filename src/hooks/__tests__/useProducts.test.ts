@@ -48,7 +48,7 @@ describe('useProducts', () => {
         { id: 1, title: 'Product 1', price: 10 },
         { id: 2, title: 'Product 2', price: 20 },
       ];
-      (productServiceModule.productService.getProducts as any).mockResolvedValue(mockProducts);
+      vi.mocked(productServiceModule.productService.getProducts).mockResolvedValue(mockProducts);
 
       const { result } = renderHook(() => useProducts(), { wrapper });
 
@@ -62,7 +62,7 @@ describe('useProducts', () => {
 
     it('should pass query params to service', async () => {
       const params = { title: 'test', categoryId: 1 };
-      (productServiceModule.productService.getProducts as any).mockResolvedValue([]);
+      vi.mocked(productServiceModule.productService.getProducts).mockResolvedValue([]);
 
       renderHook(() => useProducts(params), { wrapper });
 
@@ -75,7 +75,7 @@ describe('useProducts', () => {
   describe('useProduct', () => {
     it('should fetch single product', async () => {
       const mockProduct = { id: 1, title: 'Product 1', price: 10 };
-      (productServiceModule.productService.getProduct as any).mockResolvedValue(mockProduct);
+      vi.mocked(productServiceModule.productService.getProduct).mockResolvedValue(mockProduct);
 
       const { result } = renderHook(() => useProduct(1), { wrapper });
 
@@ -101,7 +101,7 @@ describe('useProducts', () => {
         { id: 1, name: 'Category 1' },
         { id: 2, name: 'Category 2' },
       ];
-      (categoryServiceModule.categoryService.getCategories as any).mockResolvedValue(mockCategories);
+      vi.mocked(categoryServiceModule.categoryService.getCategories).mockResolvedValue(mockCategories);
 
       const { result } = renderHook(() => useCategories(), { wrapper });
 
@@ -124,7 +124,7 @@ describe('useProducts', () => {
         categoryId: 1,
       };
       const createdProduct = { id: 1, ...newProduct };
-      (productServiceModule.productService.createProduct as any).mockResolvedValue(createdProduct);
+      vi.mocked(productServiceModule.productService.createProduct).mockResolvedValue(createdProduct);
 
       const { result } = renderHook(() => useCreateProduct(), { wrapper });
 
@@ -140,7 +140,7 @@ describe('useProducts', () => {
 
     it('should show error toast on failure', async () => {
       const error = new Error('Failed to create');
-      (productServiceModule.productService.createProduct as any).mockRejectedValue(error);
+      vi.mocked(productServiceModule.productService.createProduct).mockRejectedValue(error);
 
       const { result } = renderHook(() => useCreateProduct(), { wrapper });
 
@@ -164,7 +164,7 @@ describe('useProducts', () => {
     it('should update product and show success toast', async () => {
       const updateData = { title: 'Updated Product' };
       const updatedProduct = { id: 1, ...updateData };
-      (productServiceModule.productService.updateProduct as any).mockResolvedValue(updatedProduct);
+      vi.mocked(productServiceModule.productService.updateProduct).mockResolvedValue(updatedProduct);
 
       const { result } = renderHook(() => useUpdateProduct(), { wrapper });
 
@@ -180,7 +180,7 @@ describe('useProducts', () => {
 
     it('should show error toast on failure', async () => {
       const error = new Error('Failed to update');
-      (productServiceModule.productService.updateProduct as any).mockRejectedValue(error);
+      vi.mocked(productServiceModule.productService.updateProduct).mockRejectedValue(error);
 
       const { result } = renderHook(() => useUpdateProduct(), { wrapper });
 
@@ -196,7 +196,7 @@ describe('useProducts', () => {
 
   describe('useDeleteProduct', () => {
     it('should delete product and show success toast', async () => {
-      (productServiceModule.productService.deleteProduct as any).mockResolvedValue(true);
+      vi.mocked(productServiceModule.productService.deleteProduct).mockResolvedValue(true);
 
       const { result } = renderHook(() => useDeleteProduct(), { wrapper });
 
@@ -212,7 +212,7 @@ describe('useProducts', () => {
 
     it('should show error toast on failure', async () => {
       const error = new Error('Failed to delete');
-      (productServiceModule.productService.deleteProduct as any).mockRejectedValue(error);
+      vi.mocked(productServiceModule.productService.deleteProduct).mockRejectedValue(error);
 
       const { result } = renderHook(() => useDeleteProduct(), { wrapper });
 

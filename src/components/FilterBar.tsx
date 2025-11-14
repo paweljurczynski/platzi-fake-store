@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDebounce } from '../hooks/useDebounce';
 import { useQueryParams } from '../hooks/useQueryParams';
@@ -12,7 +12,7 @@ export const FilterBar = () => {
   const { state, updateFilters, resetFilters } = useQueryParams();
   const { data: categories } = useCategories();
   const form = useForm<FilterSchema>({
-    resolver: zodResolver(filterSchema) as any,
+    resolver: zodResolver(filterSchema) as Resolver<FilterSchema>,
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
@@ -138,7 +138,7 @@ export const FilterBar = () => {
             placeholder="Min"
             min="0"
             step="0.01"
-            error={form.formState.errors.price_min as any}
+            error={form.formState.errors.price_min}
           />
 
           <FormInput
@@ -161,7 +161,7 @@ export const FilterBar = () => {
             placeholder="Max"
             min="0"
             step="0.01"
-            error={form.formState.errors.price_max as any}
+            error={form.formState.errors.price_max}
           />
           <div className="flex items-end">
             <button

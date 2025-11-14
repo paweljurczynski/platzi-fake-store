@@ -16,7 +16,8 @@ export const ProductEdit = () => {
     try {
       await updateMutation.mutateAsync({ id: productId, data });
       navigate('/');
-    } catch (error) {
+    } catch {
+      // Error is handled by the mutation's onError callback
     }
   };
 

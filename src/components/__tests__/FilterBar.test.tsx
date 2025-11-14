@@ -54,15 +54,22 @@ const renderFilterBar = () => {
 describe('FilterBar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useQueryParamsModule.useQueryParams as any).mockReturnValue({
+    vi.mocked(useQueryParamsModule.useQueryParams).mockReturnValue({
       state: mockState,
       updateFilters: mockUpdateFilters,
       resetFilters: mockResetFilters,
+      updateSort: vi.fn(),
+      updatePagination: vi.fn(),
     });
-    (useProductsModule.useCategories as any).mockReturnValue({
+    vi.mocked(useProductsModule.useCategories).mockReturnValue({
       data: mockCategories,
       isLoading: false,
-    });
+      isError: false,
+      error: null,
+      isSuccess: true,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as unknown as ReturnType<typeof useProductsModule.useCategories>);
   });
 
   it('should render all filter fields', () => {
@@ -156,7 +163,7 @@ describe('FilterBar', () => {
   });
 
   it('should pre-fill filters from state', () => {
-    (useQueryParamsModule.useQueryParams as any).mockReturnValue({
+    vi.mocked(useQueryParamsModule.useQueryParams).mockReturnValue({
       state: {
         ...mockState,
         filters: {
@@ -168,6 +175,8 @@ describe('FilterBar', () => {
       },
       updateFilters: mockUpdateFilters,
       resetFilters: mockResetFilters,
+      updateSort: vi.fn(),
+      updatePagination: vi.fn(),
     });
 
     renderFilterBar();
@@ -189,20 +198,30 @@ describe('FilterBar', () => {
   });
 
   it('should handle empty categories', () => {
-    (useProductsModule.useCategories as any).mockReturnValue({
+    vi.mocked(useProductsModule.useCategories).mockReturnValue({
       data: undefined,
       isLoading: false,
-    });
+      isError: false,
+      error: null,
+      isSuccess: true,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as unknown as ReturnType<typeof useProductsModule.useCategories>);
 
     renderFilterBar();
     expect(screen.getByText('All Categories')).toBeInTheDocument();
   });
 
   it('should handle loading categories', () => {
-    (useProductsModule.useCategories as any).mockReturnValue({
+    vi.mocked(useProductsModule.useCategories).mockReturnValue({
       data: undefined,
       isLoading: true,
-    });
+      isError: false,
+      error: null,
+      isSuccess: false,
+      isFetching: true,
+      refetch: vi.fn(),
+    } as unknown as ReturnType<typeof useProductsModule.useCategories>);
 
     renderFilterBar();
     expect(screen.getByText('All Categories')).toBeInTheDocument();
